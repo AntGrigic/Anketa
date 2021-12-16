@@ -1,5 +1,6 @@
 let breadcrumbs = document.querySelector('.breadcrumbs-item.current');
 let mainTitle = document.querySelector('.form-title');
+let resultTitle = document.querySelector('.result-title');
 let allQuestions = {};
 let arrayPosition = {};
 let questionNumber = {};
@@ -9,10 +10,22 @@ mainTitle.onkeydown = function(e) {
     if(e.key == 'Enter') {
         this.blur();
         breadcrumbs.innerHTML = this.innerHTML;
+        resultTitle.innerHTML = this.innerHTML;
     } else {
         breadcrumbs.innerHTML = this.innerHTML;
+        resultTitle.innerHTML = this.innerHTML;
     };
 };
+
+let navIcons = document.querySelectorAll('.icons')
+for(let icon of navIcons) {
+    icon.addEventListener('click', function(e) {
+        if(!(e.target.closest('.is-active'))) {
+            document.querySelector('.is-active')?.classList.remove('is-active');
+        }
+        this.classList.add('is-active');
+    })
+}
 
 let addQuestion = document.querySelector('.add-question');
 addQuestion.addEventListener('click', function() {
@@ -59,7 +72,7 @@ function editableQuestion() {
             this.querySelector('.question-title').setAttribute('contenteditable', 'true');
             for(let answer of this.querySelectorAll('.answer')) {
                 answer.querySelector('label').setAttribute('contenteditable', 'true');
-                answer.querySelector('input').setAttribute('disabled', 'true');
+                answer.querySelector('input').disabled = true;
                 const close = answer.querySelector('.close');
                 close.addEventListener('click', function() {
                     this.parentElement.remove();
@@ -78,6 +91,11 @@ function editableQuestion() {
 document.addEventListener('click', function(e) {
     if(!(e.target.closest('.edit-mode')) && !(e.target.closest('.answer'))) {
         document.querySelector('.edit-mode')?.classList.remove('edit-mode');
+        let pero = document.querySelectorAll('.answer');
+        for(let iva of pero) {
+            iva.querySelector('.answer label').setAttribute('contenteditable', 'false');
+            iva.querySelector('.answer input').disabled = false;
+        }
     } else {
     }
 });
